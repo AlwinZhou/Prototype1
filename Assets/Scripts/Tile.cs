@@ -15,14 +15,14 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject playerObj;
     [SerializeField] private GameObject controlPanel;
 
-    /*   public void tileColor(bool IsOffset)
-       {
-           _renderer.color = IsOffset ? offsetColor : baseColor;
-       }*/
+    public List<GameObject> listOfHighlight2Objects = new List<GameObject>();
     private void Start()
     {
 
         player = playerObj.GetComponent<PlayerMovement>();
+
+        GameObject[] highlight2Objects = GameObject.FindGameObjectsWithTag("Highlight2");
+        listOfHighlight2Objects.AddRange(highlight2Objects);
 
     }
     private void Update()
@@ -34,14 +34,18 @@ public class Tile : MonoBehaviour
 
             if (controlPanel.active==true)
             {
-
-                for (int i = 0; i < 7; i++)
+                foreach (GameObject highlightObject in listOfHighlight2Objects)
                 {
-                    for (int j = 0; j < 7; j++)
+                    for (int i = 0; i < 7; i++)
                     {
-                        if (player.coordinateArray[i, j].x == highlight.transform.position.x && player.coordinateArray[i, j].y == highlight.transform.position.y)
+                        for (int j = 0; j < 7; j++)
                         {
-                            highlight2.SetActive(true);
+                            if (player.coordinateArray[i, j].x == highlightObject.transform.position.x &&
+                                player.coordinateArray[i, j].y == highlightObject.transform.position.y)
+                            {
+                                highlightObject.SetActive(true);
+                                Debug.Log("highlight2.transform.position: " + highlightObject.transform.position);
+                            }
                         }
                     }
                 }

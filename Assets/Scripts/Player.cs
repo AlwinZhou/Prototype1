@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 ClickPos;
     public TextMeshProUGUI currentRoundTEXT;
     public int currentRound=1;
-    public int moveDistance = 5;
+    public int moveDistance = 4;
 
     //make an 2d array to store the cords of where the player can move to
     [SerializeField] private GameObject highlight2;
@@ -96,8 +96,6 @@ public class PlayerMovement : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, lastClickPos, step);
             if ((Vector2)transform.position == lastClickPos)
             {
-                Debug.Log("check if arrive target pos");
-
                 moving = false;
                 currentRound++;
                 currentRoundTEXT.text = "Current Round:"+ currentRound.ToString();
@@ -105,8 +103,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     for (int j = 0; j < 7; j++)
                     {
-                        if (coordinateArray[i, j].x == highlight2.transform.position.x && coordinateArray[i, j].y == highlight2.transform.position.y)
-                        { highlight2.SetActive(false); }
+                        if(highlight2.transform.position.x== coordinateArray[i,j].x)
+                        {
+                            Debug.Log("highlight2.transform.position" + highlight2.transform.position);
+                        }
                     }
                 }
             }

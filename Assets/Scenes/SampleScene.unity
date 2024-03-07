@@ -836,7 +836,7 @@ MonoBehaviour:
   controlPanel: {fileID: 635004456}
   currentRoundTEXT: {fileID: 1224071047}
   currentRound: 1
-  moveDistance: 5
+  moveDistance: 4
   highlight2: {fileID: 1526912132}
 --- !u!212 &2048468639
 SpriteRenderer:
