@@ -20,6 +20,9 @@ public class PlayerMovement : MonoBehaviour
 
     //make an 2d array to store the cords of where the player can move to
     [SerializeField] private GameObject highlight2;
+    //[SerializeField] private GameObject TileObj;
+    //[SerializeField] private Tile TileScript;
+    public GameObject[] highlight2Objects;
 
     [System.Serializable]
     public class Coordinate
@@ -39,7 +42,10 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         lastClickPos = transform.position ;
-      
+
+        highlight2Objects= GameObject.FindGameObjectsWithTag("Highlight2");
+
+
     }
     private void Update()
     {
@@ -99,15 +105,10 @@ public class PlayerMovement : MonoBehaviour
                 moving = false;
                 currentRound++;
                 currentRoundTEXT.text = "Current Round:"+ currentRound.ToString();
-                for (int i = 0; i < 7; i++)
-                {
-                    for (int j = 0; j < 7; j++)
-                    {
-                        if(highlight2.transform.position.x== coordinateArray[i,j].x)
-                        {
-                            Debug.Log("highlight2.transform.position" + highlight2.transform.position);
-                        }
-                    }
+                foreach (GameObject highlightObject in highlight2Objects) {
+                    highlightObject.GetComponent<SpriteRenderer>().enabled = false;
+           
+
                 }
             }
         }
@@ -117,14 +118,14 @@ public class PlayerMovement : MonoBehaviour
     {
         moving = true;
         controlPanel.SetActive(false);
-        //for (int i = 0; i < 7; i++)
-        //{
-        //    for (int j = 0; j < 7; j++)
-        //    {
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
 
-        //        Debug.Log("x:" + coordinateArray[i, j].x + "y:" + coordinateArray[i, j].y);
-        //    }
-        //}
+                Debug.Log("x:" + coordinateArray[i, j].x + "y:" + coordinateArray[i, j].y);
+            }
+        }
     }
     public void OnCancel()
     {

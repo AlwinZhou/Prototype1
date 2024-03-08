@@ -34,21 +34,19 @@ public class Tile : MonoBehaviour
 
             if (controlPanel.active==true)
             {
-                foreach (GameObject highlightObject in listOfHighlight2Objects)
-                {
+                
                     for (int i = 0; i < 7; i++)
                     {
                         for (int j = 0; j < 7; j++)
                         {
-                            if (player.coordinateArray[i, j].x == highlightObject.transform.position.x &&
-                                player.coordinateArray[i, j].y == highlightObject.transform.position.y)
+                            if (player.coordinateArray[i, j].x == highlight2.transform.position.x &&
+                                player.coordinateArray[i, j].y == highlight2.transform.position.y)
                             {
-                                highlightObject.SetActive(true);
-                                Debug.Log("highlight2.transform.position: " + highlightObject.transform.position);
+                            highlight2.GetComponent<SpriteRenderer>().enabled = true;
                             }
                         }
                     }
-                }
+                
             }
         }
        
