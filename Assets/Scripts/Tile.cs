@@ -32,7 +32,7 @@ public class Tile : MonoBehaviour
             clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             ClickDistance = Vector2.Distance(clickPos, player.transform.position);
 
-          if (controlPanel.active==true)
+   /*       if (controlPanel.active==true)
             {
                 
                     for (int i = 0; i < 7; i++)
@@ -47,8 +47,8 @@ public class Tile : MonoBehaviour
                         }
                     }
                 
-            }
-        }
+            }*/
+        }  
        
 
     }

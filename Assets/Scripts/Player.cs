@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 10f;
     Vector2 lastClickPos;
     bool moving = false;
+    public bool energy = true;
    //[SerializeField] private GridManager GridSrcipt;
     [SerializeField] private GameObject controlPanel;
         Vector2 ClickPos;
@@ -49,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        //initialze the 2d array
+/*        //initialze the 2d array
         int a, b;
         a = (int)transform.position.x - 3;
         b = (int)transform.position.y - 3;
@@ -76,14 +77,12 @@ public class PlayerMovement : MonoBehaviour
               float ClickDistance = Vector2.Distance(ClickPos, (Vector2)transform.position);
             if (ClickDistance < 1)
             {
-                Debug.Log("player pos:" + transform.position);
 
                 controlPanel.SetActive(true);
             }
 
             if (moving)
             {
-                Debug.Log("player pos:" + transform.position);
 
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
                 if (hit.collider != null)
@@ -113,27 +112,32 @@ public class PlayerMovement : MonoBehaviour
                     highlightObject.GetComponent<SpriteRenderer>().enabled = false;
                 }
             }
-        }
+        }*/
     }
 
-    public void OnMove()
-    {
-        moving = true;
-        controlPanel.SetActive(false);
-    }
-    public void OnMove1()
-    {
-        moving = true;
-        controlPanel.SetActive(false);
-    }
-    public void OnCancel()
-    {
-        controlPanel.SetActive(false);
-    }
 
-   /*  void OnTriggerStay(Collider other)
-    {
-        if (controlPanel.active == true) { highlight2.SetActive(true); }
-    }
-   */
+
+
+    /* 
+       // set mutiple OnMove fuc to different characters
+       public void OnMove()
+       {
+           moving = true;
+           controlPanel.SetActive(false);
+       }
+       public void OnMove1()
+       {
+           moving = true;
+           controlPanel.SetActive(false);
+       }
+       public void OnCancel()
+       {
+           controlPanel.SetActive(false);
+       }
+
+      void OnTriggerStay(Collider other)
+       {
+           if (controlPanel.active == true) { highlight2.SetActive(true); }
+       }
+      */
 }
