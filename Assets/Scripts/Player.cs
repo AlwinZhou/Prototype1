@@ -76,12 +76,15 @@ public class PlayerMovement : MonoBehaviour
               float ClickDistance = Vector2.Distance(ClickPos, (Vector2)transform.position);
             if (ClickDistance < 1)
             {
+                Debug.Log("player pos:" + transform.position);
+
                 controlPanel.SetActive(true);
             }
 
             if (moving)
             {
-            
+                Debug.Log("player pos:" + transform.position);
+
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
                 if (hit.collider != null)
                 {
@@ -99,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
         if (moving&& (Vector2)transform.position != lastClickPos)
         {
             float step = speed * Time.deltaTime;
+
             transform.position = Vector2.MoveTowards(transform.position, lastClickPos, step);
             if ((Vector2)transform.position == lastClickPos)
             {
@@ -107,8 +111,6 @@ public class PlayerMovement : MonoBehaviour
                 currentRoundTEXT.text = "Current Round:"+ currentRound.ToString();
                 foreach (GameObject highlightObject in highlight2Objects) {
                     highlightObject.GetComponent<SpriteRenderer>().enabled = false;
-           
-
                 }
             }
         }
@@ -118,17 +120,20 @@ public class PlayerMovement : MonoBehaviour
     {
         moving = true;
         controlPanel.SetActive(false);
-        for (int i = 0; i < 7; i++)
-        {
-            for (int j = 0; j < 7; j++)
-            {
-
-                Debug.Log("x:" + coordinateArray[i, j].x + "y:" + coordinateArray[i, j].y);
-            }
-        }
+    }
+    public void OnMove1()
+    {
+        moving = true;
+        controlPanel.SetActive(false);
     }
     public void OnCancel()
     {
         controlPanel.SetActive(false);
     }
+
+   /*  void OnTriggerStay(Collider other)
+    {
+        if (controlPanel.active == true) { highlight2.SetActive(true); }
+    }
+   */
 }
