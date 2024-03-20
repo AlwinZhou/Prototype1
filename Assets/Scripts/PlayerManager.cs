@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -9,7 +11,9 @@ public class PlayerManager : MonoBehaviour
     public GameObject player2;
     public GameObject selectedPlayer;
     public GameObject[] PlayerArray;
-    public PlayerMovement loopPlayer;
+    //player clicked
+  
+
 
     //
     Vector2 ClickPos;
@@ -19,11 +23,17 @@ public class PlayerManager : MonoBehaviour
     private GameObject controlPanel;
     //
     Vector2 lastClickPos;
+   
 
+    //
+    [SerializeField]
+    private GameObject Highligh2;
+    [SerializeField]
+    private GameObject[] HighlightArray;
 
     private void Start()
     {
-        
+        HighlightArray = GameObject.FindGameObjectsWithTag("Highlight2");
     }
     // Update is called once per frame
     void Update()
@@ -37,13 +47,17 @@ public class PlayerManager : MonoBehaviour
             {
                 selectedPlayer = player1;
                 controlPanel.SetActive(true);
+                selectedPlayer.GetComponent<PlayerMovement>().playerActive();
 
             }
             if (ClickDistance2 < 1)
             {
                 selectedPlayer = player2;
                 controlPanel.SetActive(true);
+                selectedPlayer.GetComponent<PlayerMovement>().playerActive();
+
             }
+
             lastClickPos = selectedPlayer.transform.position;
 
             if (moving)
@@ -52,10 +66,7 @@ public class PlayerManager : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
                 if (hit.collider != null)
                 {
-
                     GameObject clickObj = hit.transform.gameObject;
-
-
                     if (clickObj.GetComponent<Tile>() != null && Vector2.Distance(clickObj.transform.position, (Vector2)selectedPlayer.transform.position) < 4)
                     {
                         lastClickPos = clickObj.transform.position;
@@ -64,63 +75,77 @@ public class PlayerManager : MonoBehaviour
                 }
 
             }
-            if (moving && (Vector2)selectedPlayer.transform.position != lastClickPos )
+          
+        }
+        if (moving && (Vector2)selectedPlayer.transform.position != lastClickPos)
+        {
+            float step = 10f * Time.deltaTime;
+            Debug.Log("selectedPlayer.transform.position before move" + selectedPlayer.transform.position);
+            Debug.Log("lastClickPosn" + lastClickPos);
+
+
+            selectedPlayer.transform.position = Vector2.MoveTowards(selectedPlayer.transform.position, lastClickPos, step);
+            Debug.Log("selectedPlayer.transform.position after move" + selectedPlayer.transform.position);
+
+            if ((Vector2)selectedPlayer.transform.position == lastClickPos)
             {
-                float step = 10* Time.deltaTime;
-                Debug.Log("selectedPlayer.transform.position" + selectedPlayer.transform.position);
-                Debug.Log("lastClickPosn" + lastClickPos);
-
-                selectedPlayer.transform.position = lastClickPos;
-                if ((Vector2)selectedPlayer.transform.position == lastClickPos)
+                moving = false;
+                selectedPlayer.GetComponent<PlayerMovement>().energy = false;
+                selectedPlayer.GetComponent<PlayerMovement>().arrow.SetActive(false);
+                foreach(GameObject tile in HighlightArray)
                 {
-                    Debug.Log("if enter moving statement:");
-
-                    moving = false;
-                    selectedPlayer.GetComponent<PlayerMovement>().energy = false;
+                    tile.GetComponent<SpriteRenderer>().enabled = false;
                 }
             }
         }
     }
 
-
-
-
     public void OnMove()
     {
         moving = true;
         controlPanel.SetActive(false);
+        selectedPlayer.GetComponent<PlayerMovement>().TileTrigger.SetActive(false);
+
     }
     public void OnCancel()
     {
         controlPanel.SetActive(false);
+        selectedPlayer.GetComponent<PlayerMovement>().playerDiable();
+        foreach (GameObject tile in HighlightArray)
+        {
+            tile.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
     }
     public void OnNext()
     {
-        int i = 0;
-        int count = 0;
-        int size = PlayerArray.Length;
-        bool finish = false;
-        while (!finish)
+        foreach(GameObject player in PlayerArray)
         {
-            loopPlayer = PlayerArray[i].GetComponent<PlayerMovement>();
-            if (loopPlayer.energy == false)
+            if(player.GetComponent<PlayerMovement>().energy == false)
             {
-                count++;
-            }
-            else
-            {
-                selectedPlayer = PlayerArray[i];
-            }
-            if(count == size)
-            {
-                finish = true;
-            }
-            i++;
-            if (i == size)
-            {
-                i = 0;
+                return;
             }
         }
+        int playerIndex = Array.IndexOf(PlayerArray, selectedPlayer);
+        playerIndex++;
+        if (playerIndex == PlayerArray.Length)
+        {
+            playerIndex = 0;
+        }
+            selectedPlayer = PlayerArray[playerIndex];
+        while (selectedPlayer.GetComponent<PlayerMovement>().energy == false)
+        {
+            
+            playerIndex++;
+            if(playerIndex == PlayerArray.Length)
+            {
+                playerIndex = 0;
+            }
+            selectedPlayer = PlayerArray[playerIndex];
+        }
+
+        selectedPlayer.GetComponent<PlayerMovement>().playerActive();
+
     }
 
 }
